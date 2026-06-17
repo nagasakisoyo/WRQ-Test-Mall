@@ -59,22 +59,23 @@ include __DIR__ . '/../includes/header.php';
         </form>
 
         <?php if (empty($products)): ?>
-            <div class="alert alert-info">暂无商品</div>
+            <div class="alert alert-info">暂无相关商品</div>
         <?php else: ?>
         <div class="row">
             <?php foreach ($products as $prod): ?>
             <div class="col-md-4 mb-4">
                 <div class="card h-100 product-card">
-                    <div class="card-img-top bg-light text-center py-4"><span style="font-size:3rem;">📦</span></div>
+                    <div class="card-img-top text-center py-4" style="background:var(--bg-elevated);font-size:2.5rem;opacity:.5;">&#128230;</div>
                     <div class="card-body">
-                        <h6><?= h($prod['name']) ?></h6>
-                        <p class="text-muted small mb-1"><?= h($prod['title']) ?></p>
+                        <h6 style="font-family:var(--font-display);font-weight:600;"><?= h($prod['name']) ?></h6>
+                        <p style="color:var(--text-muted);font-size:.82rem;margin-bottom:.5rem;"><?= h($prod['title']) ?></p>
                         <span class="badge badge-secondary"><?= h($prod['category_name']) ?></span>
-                        <p class="text-danger font-weight-bold mt-2 mb-0">¥<?= format_price($prod['sale_price']) ?>
-                            <small class="text-muted"><del>¥<?= format_price($prod['price']) ?></del></small>
+                        <p class="mt-2 mb-0">
+                            <span class="price-current" style="font-size:1.05rem;">&yen;<?= format_price($prod['sale_price']) ?></span>
+                            <small class="price-original ml-1"><del>&yen;<?= format_price($prod['price']) ?></del></small>
                         </p>
                     </div>
-                    <div class="card-footer bg-white">
+                    <div class="card-footer">
                         <a href="<?= base_url() ?>/index.php?action=product&id=<?= $prod['id'] ?>" class="btn btn-sm btn-outline-primary btn-block">查看详情</a>
                     </div>
                 </div>

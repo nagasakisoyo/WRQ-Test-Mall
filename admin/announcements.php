@@ -24,27 +24,27 @@ include __DIR__ . '/../includes/admin_header.php';
 $announcements = $pdo->query("SELECT a.*, ad.nickname as admin_nickname FROM announcement a LEFT JOIN admin ad ON a.admin_id = ad.id ORDER BY a.create_time DESC")->fetchAll();
 ?>
 
-<h3>公告管理</h3>
+<h3 style="font-family:var(--font-display);margin-bottom:1.5rem;">公告管理</h3>
 <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#addAnnModal">发布公告</button>
 
-<table class="table table-bordered">
-    <thead class="thead-dark">
+<table class="table table-hover">
+    <thead>
         <tr><th>ID</th><th>标题</th><th>内容</th><th>发布者</th><th>发布时间</th><th>操作</th></tr>
     </thead>
     <tbody>
     <?php foreach ($announcements as $ann): ?>
     <tr>
-        <td><?= $ann['id'] ?></td>
+        <td style="font-family:var(--font-mono);font-size:.85rem;"><?= $ann['id'] ?></td>
         <td><?= h($ann['title']) ?></td>
-        <td><?= h($ann['content']) ?></td>
-        <!-- VULN-005: admin_nickname rendered without escaping — XSS trigger -->
+        <td style="max-width:300px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;"><?= h($ann['content']) ?></td>
+        <!-- VULN-005: admin_nickname rendered without escaping - XSS trigger -->
         <td><?= $ann['admin_nickname'] ?></td>
-        <td><?= $ann['create_time'] ?></td>
+        <td style="font-size:.85rem;color:var(--text-muted);"><?= $ann['create_time'] ?></td>
         <td>
             <form method="post" style="display:inline;" onsubmit="return confirm('确定删除？')">
                 <input type="hidden" name="act" value="delete">
                 <input type="hidden" name="id" value="<?= $ann['id'] ?>">
-                <button class="btn btn-sm btn-danger">删除</button>
+                <button class="btn btn-sm btn-outline-danger">删除</button>
             </form>
         </td>
     </tr>

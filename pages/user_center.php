@@ -5,14 +5,14 @@ $extra_js = ['user_center.js'];
 include __DIR__ . '/../includes/header.php';
 ?>
 
-<h3>个人中心</h3>
+<h3 style="font-family:var(--font-display);margin-bottom:1.5rem;">个人中心</h3>
 <div class="row">
     <div class="col-md-8">
         <div class="card">
-            <div class="card-header">个人信息</div>
+            <div class="card-header">个人资料</div>
             <div class="card-body">
                 <div id="profile-msg" class="alert d-none"></div>
-                <div id="profile-loading">加载中...</div>
+                <div id="profile-loading" style="color:var(--text-muted);">加载中...</div>
                 <div id="profile-content" style="display:none;">
                     <table class="table table-bordered">
                         <tr><th width="120">用户名</th><td id="p-username"></td></tr>
@@ -41,7 +41,6 @@ include __DIR__ . '/../includes/header.php';
     </div>
 </div>
 
-<!-- VULN-003: uid taken from hidden field, AJAX fetches any user's data -->
 <input type="hidden" id="current-uid" value="<?= $userId ?>">
 
 <?php include __DIR__ . '/../includes/footer.php'; ?>

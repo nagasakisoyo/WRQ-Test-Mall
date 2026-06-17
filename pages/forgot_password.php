@@ -1,48 +1,47 @@
 <?php
-$page_title = '忘记密码';
+$page_title = '找回密码';
 include __DIR__ . '/../includes/header.php';
 ?>
 
 <div class="row justify-content-center">
-    <div class="col-md-5">
-        <div class="card">
-            <div class="card-header bg-info text-white"><h5 class="mb-0">忘记密码</h5></div>
-            <div class="card-body">
+    <div class="col-md-5 col-lg-4">
+        <div class="auth-card card">
+            <div class="card-header">
+                <h5>重置密码</h5>
+            </div>
+            <div class="card-body p-4">
                 <div id="forgot-msg" class="alert d-none"></div>
 
-                <!-- Step 1: Enter username -->
                 <div id="step1">
                     <div class="form-group">
-                        <label>请输入您的用户名</label>
-                        <input type="text" id="forgot-username" class="form-control" required>
+                        <label>请输入用户名</label>
+                        <input type="text" id="forgot-username" class="form-control" placeholder="用户名" required>
                     </div>
-                    <button id="btn-step1" class="btn btn-info btn-block">下一步</button>
+                    <button id="btn-step1" class="btn btn-primary btn-block">下一步</button>
                 </div>
 
-                <!-- Step 2: Answer security question -->
                 <div id="step2" style="display:none;">
                     <div class="form-group">
                         <label>密保问题</label>
-                        <p id="security-question" class="font-weight-bold"></p>
+                        <p id="security-question" style="color:var(--accent);font-weight:600;"></p>
                     </div>
                     <div class="form-group">
-                        <label>请输入密保答案</label>
-                        <input type="text" id="security-answer" class="form-control" required>
+                        <label>你的答案</label>
+                        <input type="text" id="security-answer" class="form-control" placeholder="请输入密保答案" required>
                     </div>
-                    <button id="btn-step2" class="btn btn-info btn-block">验证</button>
+                    <button id="btn-step2" class="btn btn-primary btn-block">验证</button>
                 </div>
 
-                <!-- Step 3: Reset password (VULN-008: reachable by tampering step2 response) -->
                 <div id="step3" style="display:none;">
                     <div class="form-group">
                         <label>新密码</label>
-                        <input type="password" id="new-password" class="form-control" required>
+                        <input type="password" id="new-password" class="form-control" placeholder="请输入新密码" required>
                     </div>
                     <div class="form-group">
-                        <label>确认新密码</label>
-                        <input type="password" id="confirm-password" class="form-control" required>
+                        <label>确认密码</label>
+                        <input type="password" id="confirm-password" class="form-control" placeholder="再次输入新密码" required>
                     </div>
-                    <button id="btn-step3" class="btn btn-success btn-block">重置密码</button>
+                    <button id="btn-step3" class="btn btn-primary btn-block">重置密码</button>
                 </div>
             </div>
         </div>
@@ -83,7 +82,7 @@ $('#btn-step3').on('click', function() {
     if (p1 !== p2) { alert('两次密码不一致'); return; }
     $.post(BASE_URL + '/api/forgot_password.php', {step: 'reset_password', new_password: p1}, function(res) {
         if (res.success) {
-            alert('密码重置成功！请登录');
+            alert('密码重置成功，请登录');
             window.location.href = BASE_URL + '/index.php?action=login';
         } else {
             alert(res.msg);

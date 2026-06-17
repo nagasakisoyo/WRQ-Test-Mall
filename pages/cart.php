@@ -13,13 +13,13 @@ $cartItems = $stmt->fetchAll();
 include __DIR__ . '/../includes/header.php';
 ?>
 
-<h3>购物车</h3>
+<h3 style="font-family:var(--font-display);margin-bottom:1.5rem;">购物车</h3>
 
 <?php if (empty($cartItems)): ?>
-    <div class="alert alert-info">购物车是空的，<a href="<?= base_url() ?>/index.php?action=products">去选购</a></div>
+    <div class="alert alert-info">购物车为空。<a href="<?= base_url() ?>/index.php?action=products">去逛逛</a></div>
 <?php else: ?>
-<table class="table">
-    <thead class="thead-light">
+<table class="table cart-table">
+    <thead>
         <tr>
             <th><input type="checkbox" id="checkAll" checked></th>
             <th>商品</th>
@@ -35,22 +35,22 @@ include __DIR__ . '/../includes/header.php';
             <td><input type="checkbox" class="item-check" value="<?= $item['id'] ?>" checked></td>
             <td>
                 <a href="<?= base_url() ?>/index.php?action=product&id=<?= $item['product_id'] ?>"><?= h($item['product_name']) ?></a>
-                <small class="text-muted d-block"><?= h($item['product_title']) ?></small>
+                <small class="d-block" style="color:var(--text-muted);"><?= h($item['product_title']) ?></small>
             </td>
-            <td class="text-danger">¥<?= format_price($item['sale_price']) ?></td>
+            <td style="color:var(--accent);font-family:var(--font-mono);">&yen;<?= format_price($item['sale_price']) ?></td>
             <td>
                 <input type="number" class="form-control form-control-sm item-num" value="<?= $item['number'] ?>" min="1" max="99" style="width:70px;" data-id="<?= $item['id'] ?>">
             </td>
-            <td class="text-danger item-subtotal">¥<?= format_price($item['price']) ?></td>
-            <td><button class="btn btn-sm btn-danger btn-del-item" data-id="<?= $item['id'] ?>">删除</button></td>
+            <td class="item-subtotal" style="color:var(--accent);font-family:var(--font-mono);font-weight:600;">&yen;<?= format_price($item['price']) ?></td>
+            <td><button class="btn btn-sm btn-outline-danger btn-del-item" data-id="<?= $item['id'] ?>">删除</button></td>
         </tr>
         <?php endforeach; ?>
     </tbody>
 </table>
 
 <div class="text-right">
-    <h5>合计：<span id="cart-total" class="text-danger">¥0.00</span></h5>
-    <button id="btnCheckout" class="btn btn-danger btn-lg">去结算</button>
+    <h5>合计: <span id="cart-total" style="color:var(--accent);font-family:var(--font-mono);">&yen;0.00</span></h5>
+    <button id="btnCheckout" class="btn btn-primary btn-lg mt-2">去结算</button>
 </div>
 
 <script>
@@ -80,7 +80,7 @@ $('.item-num').on('change', function() {
 });
 
 $('.btn-del-item').on('click', function() {
-    if (!confirm('确定删除？')) return;
+    if (!confirm('确定删除该商品？')) return;
     $.post(BASE_URL + '/api/cart.php?action=delete', {item_id: $(this).data('id')}, function(res) {
         if (res.success) location.reload();
     }, 'json');

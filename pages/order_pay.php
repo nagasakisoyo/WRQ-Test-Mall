@@ -15,17 +15,21 @@ include __DIR__ . '/../includes/header.php';
     <div class="alert alert-danger">订单不存在</div>
 <?php else: ?>
 <div class="row justify-content-center">
-    <div class="col-md-6">
-        <div class="card">
-            <div class="card-header bg-warning"><h5 class="mb-0">订单支付</h5></div>
-            <div class="card-body text-center">
-                <p>订单编号：<strong><?= h($order['order_code']) ?></strong></p>
-                <h3 class="text-danger">¥<?= format_price($order['total_price']) ?></h3>
-                <p class="text-muted">收货人：<?= h($order['receiver']) ?> | <?= h($order['mobile']) ?></p>
-                <p class="text-muted"><?= h($order['address_detail']) ?></p>
+    <div class="col-md-5 col-lg-4">
+        <div class="card" style="border-color:var(--border-accent);">
+            <div class="card-header" style="background:var(--accent-muted);border-bottom-color:var(--border-accent);">
+                <h5 class="mb-0" style="color:var(--accent);">订单支付</h5>
+            </div>
+            <div class="card-body text-center py-4">
+                <p style="font-size:.9rem;color:var(--text-muted);">订单编号: <strong style="font-family:var(--font-mono);color:var(--text-primary);"><?= h($order['order_code']) ?></strong></p>
+                <h3 style="color:var(--accent);font-family:var(--font-mono);font-weight:700;font-size:2rem;margin:1rem 0;">&yen;<?= format_price($order['total_price']) ?></h3>
+                <p style="font-size:.85rem;color:var(--text-muted);">
+                    <?= h($order['receiver']) ?> | <?= h($order['mobile']) ?><br>
+                    <?= h($order['address_detail']) ?>
+                </p>
                 <hr>
                 <?php if ($order['status'] == 0): ?>
-                <button class="btn btn-danger btn-lg" id="btnPay" data-code="<?= h($order['order_code']) ?>">确认支付</button>
+                <button class="btn btn-primary btn-lg px-5" id="btnPay" data-code="<?= h($order['order_code']) ?>">确认支付</button>
                 <?php else: ?>
                 <div class="alert alert-success">订单已支付</div>
                 <?php endif; ?>

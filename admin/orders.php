@@ -22,28 +22,29 @@ $page_title = '订单管理';
 include __DIR__ . '/../includes/admin_header.php';
 
 $orders = $pdo->query("SELECT o.*, u.username FROM product_order o LEFT JOIN user u ON o.user_id = u.id ORDER BY o.create_time DESC")->fetchAll();
+$badgeMap = [0 => 'warning', 1 => 'info', 2 => 'primary', 3 => 'success', 4 => 'secondary'];
 ?>
 
-<h3>订单管理</h3>
-<table class="table table-bordered table-hover">
-    <thead class="thead-dark">
+<h3 style="font-family:var(--font-display);margin-bottom:1.5rem;">订单管理</h3>
+<table class="table table-hover">
+    <thead>
         <tr><th>订单号</th><th>用户</th><th>金额</th><th>收货人</th><th>状态</th><th>创建时间</th><th>操作</th></tr>
     </thead>
     <tbody>
     <?php foreach ($orders as $o): ?>
     <tr>
-        <td><?= h($o['order_code']) ?></td>
+        <td style="font-family:var(--font-mono);font-size:.85rem;"><?= h($o['order_code']) ?></td>
         <td><?= h($o['username']) ?></td>
-        <td class="text-danger">¥<?= format_price($o['total_price']) ?></td>
+        <td style="color:var(--accent);font-family:var(--font-mono);">&yen;<?= format_price($o['total_price']) ?></td>
         <td><?= h($o['receiver']) ?></td>
-        <td><?= $statusMap[$o['status']] ?? '未知' ?></td>
-        <td><?= $o['create_time'] ?></td>
+        <td><span class="badge badge-<?= $badgeMap[$o['status']] ?? 'secondary' ?>"><?= $statusMap[$o['status']] ?? '未知' ?></span></td>
+        <td style="font-size:.85rem;color:var(--text-muted);"><?= $o['create_time'] ?></td>
         <td>
             <?php if ($o['status'] == 1): ?>
             <form method="post" style="display:inline;">
                 <input type="hidden" name="act" value="ship">
                 <input type="hidden" name="order_id" value="<?= $o['id'] ?>">
-                <button class="btn btn-sm btn-success">发货</button>
+                <button class="btn btn-sm btn-primary">发货</button>
             </form>
             <?php endif; ?>
             <?php if ($o['status'] < 3): ?>

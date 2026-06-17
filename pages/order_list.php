@@ -20,7 +20,7 @@ $statusMap = [0 => '待付款', 1 => '待发货', 2 => '待收货', 3 => '已完
 $badgeMap = [0 => 'warning', 1 => 'info', 2 => 'primary', 3 => 'success', 4 => 'secondary'];
 ?>
 
-<h3>我的订单</h3>
+<h3 style="font-family:var(--font-display);margin-bottom:1.5rem;">我的订单</h3>
 <ul class="nav nav-tabs mb-3">
     <li class="nav-item"><a class="nav-link <?= $status === '' ? 'active' : '' ?>" href="<?= base_url() ?>/index.php?action=orders">全部</a></li>
     <?php foreach ($statusMap as $k => $v): ?>
@@ -34,7 +34,7 @@ $badgeMap = [0 => 'warning', 1 => 'info', 2 => 'primary', 3 => 'success', 4 => '
 <?php foreach ($orders as $o): ?>
 <div class="card mb-3">
     <div class="card-header d-flex justify-content-between">
-        <span>订单号：<?= h($o['order_code']) ?></span>
+        <span style="font-family:var(--font-mono);font-size:.85rem;"><?= h($o['order_code']) ?></span>
         <span class="badge badge-<?= $badgeMap[$o['status']] ?? 'secondary' ?>"><?= $statusMap[$o['status']] ?? '未知' ?></span>
     </div>
     <div class="card-body">
@@ -43,13 +43,14 @@ $badgeMap = [0 => 'warning', 1 => 'info', 2 => 'primary', 3 => 'success', 4 => '
         $items->execute([$o['id']]);
         foreach ($items->fetchAll() as $item):
         ?>
-        <p class="mb-1"><?= h($item['product_name']) ?> x<?= $item['number'] ?> — <span class="text-danger">¥<?= format_price($item['price']) ?></span></p>
+        <p class="mb-1"><?= h($item['product_name']) ?> x<?= $item['number'] ?> <span style="color:var(--accent);font-family:var(--font-mono);">&yen;<?= format_price($item['price']) ?></span></p>
         <?php endforeach; ?>
         <hr>
-        <p class="mb-0">合计：<strong class="text-danger">¥<?= format_price($o['total_price']) ?></strong>
-            <span class="text-muted ml-3"><?= $o['create_time'] ?></span>
+        <p class="mb-0">
+            合计: <strong style="color:var(--accent);font-family:var(--font-mono);">&yen;<?= format_price($o['total_price']) ?></strong>
+            <span style="color:var(--text-muted);margin-left:1rem;font-size:.85rem;"><?= $o['create_time'] ?></span>
             <?php if ($o['status'] == 0): ?>
-            <a href="<?= base_url() ?>/index.php?action=order_pay&code=<?= h($o['order_code']) ?>" class="btn btn-sm btn-danger ml-2">去支付</a>
+            <a href="<?= base_url() ?>/index.php?action=order_pay&code=<?= h($o['order_code']) ?>" class="btn btn-sm btn-primary ml-2">去支付</a>
             <?php endif; ?>
         </p>
     </div>

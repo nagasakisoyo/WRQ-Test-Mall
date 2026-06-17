@@ -4,25 +4,27 @@ include __DIR__ . '/../includes/header.php';
 ?>
 
 <div class="row justify-content-center">
-    <div class="col-md-5">
-        <div class="card">
-            <div class="card-header bg-primary text-white"><h5 class="mb-0">用户登录</h5></div>
-            <div class="card-body">
+    <div class="col-md-5 col-lg-4">
+        <div class="auth-card card">
+            <div class="card-header">
+                <h5>用户登录</h5>
+            </div>
+            <div class="card-body p-4">
                 <div id="login-msg" class="alert d-none"></div>
                 <form id="loginForm">
                     <div class="form-group">
                         <label>用户名</label>
-                        <input type="text" name="username" class="form-control" required>
+                        <input type="text" name="username" class="form-control" placeholder="请输入用户名" required>
                     </div>
                     <div class="form-group">
                         <label>密码</label>
-                        <input type="password" name="password" class="form-control" required>
+                        <input type="password" name="password" class="form-control" placeholder="请输入密码" required>
                     </div>
-                    <button type="submit" class="btn btn-primary btn-block">登录</button>
+                    <button type="submit" class="btn btn-primary btn-block mt-3">登录</button>
                 </form>
-                <div class="mt-3 text-center">
-                    <a href="<?= base_url() ?>/index.php?action=register">还没有账号？去注册</a>
-                    <span class="mx-2">|</span>
+                <div class="mt-3 text-center" style="font-size:.85rem;">
+                    <a href="<?= base_url() ?>/index.php?action=register">注册账号</a>
+                    <span class="mx-2" style="color:var(--text-muted);">|</span>
                     <a href="<?= base_url() ?>/index.php?action=forgot">忘记密码？</a>
                 </div>
             </div>

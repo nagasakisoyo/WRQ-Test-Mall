@@ -10,8 +10,8 @@ $orderCompleted = $pdo->query("SELECT COUNT(*) FROM product_order WHERE status =
 $revenue = $pdo->query("SELECT COALESCE(SUM(total_price), 0) FROM product_order WHERE status >= 1")->fetchColumn();
 ?>
 
-<h3>管理仪表盘</h3>
-<div class="row mt-4">
+<h3 style="font-family:var(--font-display);margin-bottom:1.5rem;">管理仪表盘</h3>
+<div class="row mt-3">
     <div class="col-md-3">
         <div class="card text-white bg-primary mb-3">
             <div class="card-body text-center">
@@ -39,7 +39,7 @@ $revenue = $pdo->query("SELECT COALESCE(SUM(total_price), 0) FROM product_order 
     <div class="col-md-3">
         <div class="card text-white bg-danger mb-3">
             <div class="card-body text-center">
-                <h2>¥<?= format_price($revenue) ?></h2>
+                <h2>&yen;<?= format_price($revenue) ?></h2>
                 <p class="mb-0">总营收</p>
             </div>
         </div>
@@ -48,7 +48,7 @@ $revenue = $pdo->query("SELECT COALESCE(SUM(total_price), 0) FROM product_order 
 
 <div class="card">
     <div class="card-header">最近订单</div>
-    <table class="table mb-0">
+    <table class="table table-hover mb-0">
         <thead><tr><th>订单号</th><th>用户</th><th>金额</th><th>状态</th><th>时间</th></tr></thead>
         <tbody>
         <?php
@@ -57,11 +57,11 @@ $revenue = $pdo->query("SELECT COALESCE(SUM(total_price), 0) FROM product_order 
         foreach ($orders as $o):
         ?>
         <tr>
-            <td><?= h($o['order_code']) ?></td>
+            <td style="font-family:var(--font-mono);font-size:.85rem;"><?= h($o['order_code']) ?></td>
             <td><?= h($o['username']) ?></td>
-            <td class="text-danger">¥<?= format_price($o['total_price']) ?></td>
-            <td><?= $statusMap[$o['status']] ?? '未知' ?></td>
-            <td><?= $o['create_time'] ?></td>
+            <td style="color:var(--accent);font-family:var(--font-mono);">&yen;<?= format_price($o['total_price']) ?></td>
+            <td><span class="badge badge-<?= ['warning','info','primary','success','secondary'][$o['status']] ?? 'secondary' ?>"><?= $statusMap[$o['status']] ?? '未知' ?></span></td>
+            <td style="font-size:.85rem;color:var(--text-muted);"><?= $o['create_time'] ?></td>
         </tr>
         <?php endforeach; ?>
         </tbody>

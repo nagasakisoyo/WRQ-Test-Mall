@@ -36,7 +36,7 @@ $extra_js = ['order.js'];
 include __DIR__ . '/../includes/header.php';
 ?>
 
-<h3>确认订单</h3>
+<h3 style="font-family:var(--font-display);margin-bottom:1.5rem;">确认订单</h3>
 
 <?php if (empty($orderItems)): ?>
     <div class="alert alert-warning">没有可结算的商品</div>
@@ -49,9 +49,9 @@ include __DIR__ . '/../includes/header.php';
         <?php foreach ($orderItems as $item): ?>
         <tr>
             <td><?= h($item['name']) ?></td>
-            <td>¥<?= format_price($item['sale_price']) ?></td>
+            <td style="font-family:var(--font-mono);">&yen;<?= format_price($item['sale_price']) ?></td>
             <td><?= $item['number'] ?></td>
-            <td class="text-danger">¥<?= format_price($item['subtotal']) ?></td>
+            <td style="color:var(--accent);font-family:var(--font-mono);font-weight:600;">&yen;<?= format_price($item['subtotal']) ?></td>
         </tr>
         <?php endforeach; ?>
         </tbody>
@@ -86,8 +86,8 @@ include __DIR__ . '/../includes/header.php';
             <input type="hidden" name="items" value='<?= json_encode($orderItems) ?>'>
 
             <div class="text-right">
-                <h4>应付金额：<span class="text-danger" id="display-total">¥<?= format_price($totalPrice) ?></span></h4>
-                <button type="submit" class="btn btn-danger btn-lg mt-2">提交订单</button>
+                <h4>应付金额: <span style="color:var(--accent);font-family:var(--font-mono);font-weight:700;" id="display-total">&yen;<?= format_price($totalPrice) ?></span></h4>
+                <button type="submit" class="btn btn-primary btn-lg mt-2">提交订单</button>
             </div>
         </form>
     </div>

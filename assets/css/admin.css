@@ -1,6 +1,38 @@
-.card {
-    margin-bottom: 1rem;
+/* ======================================================
+   WRQTestMall Admin - Dark Security Theme
+   Extends the base style.css for admin panel
+   ====================================================== */
+
+.card { margin-bottom: 1rem; }
+.table th, .table td { vertical-align: middle; }
+
+/* Dashboard stat cards */
+.card.text-white {
+  border: 1px solid var(--border);
 }
-.table th, .table td {
-    vertical-align: middle;
+.card.text-white .card-body h2 {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 2rem;
+  font-variant-numeric: tabular-nums;
+}
+.card.text-white .card-body p {
+  opacity: .85;
+  font-size: .85rem;
+  font-weight: 500;
+}
+.card.bg-primary { background: linear-gradient(135deg, #0d9488, #059669) !important; }
+.card.bg-success { background: linear-gradient(135deg, #059669, #10b981) !important; }
+.card.bg-warning { background: linear-gradient(135deg, #d97706, #f59e0b) !important; }
+.card.bg-danger { background: linear-gradient(135deg, #dc2626, #ef4444) !important; }
+
+/* Admin nav active state */
+.navbar-dark .navbar-nav .nav-link.active,
+.navbar-dark .navbar-nav .show > .nav-link {
+  color: var(--accent);
+}
+
+/* Table action buttons */
+.table form[style*="inline"] .btn {
+  margin-right: .25rem;
 }

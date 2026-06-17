@@ -31,22 +31,22 @@ $products = $pdo->query("SELECT p.*, c.name as category_name FROM product p LEFT
 $categories = get_categories();
 ?>
 
-<h3>商品管理</h3>
+<h3 style="font-family:var(--font-display);margin-bottom:1.5rem;">商品管理</h3>
 <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#addModal">添加商品</button>
 
-<table class="table table-bordered table-hover">
-    <thead class="thead-dark">
+<table class="table table-hover">
+    <thead>
         <tr><th>ID</th><th>商品名</th><th>分类</th><th>原价</th><th>售价</th><th>库存</th><th>状态</th><th>操作</th></tr>
     </thead>
     <tbody>
     <?php foreach ($products as $p): ?>
     <tr>
-        <td><?= $p['id'] ?></td>
+        <td style="font-family:var(--font-mono);font-size:.85rem;"><?= $p['id'] ?></td>
         <td><?= h($p['name']) ?></td>
-        <td><?= h($p['category_name']) ?></td>
-        <td>¥<?= format_price($p['price']) ?></td>
-        <td class="text-danger">¥<?= format_price($p['sale_price']) ?></td>
-        <td><?= $p['stock'] ?></td>
+        <td><span class="badge badge-info"><?= h($p['category_name']) ?></span></td>
+        <td style="font-family:var(--font-mono);">&yen;<?= format_price($p['price']) ?></td>
+        <td style="font-family:var(--font-mono);color:var(--accent);">&yen;<?= format_price($p['sale_price']) ?></td>
+        <td style="font-family:var(--font-mono);"><?= $p['stock'] ?></td>
         <td><?= $p['is_enabled'] == 0 ? '<span class="badge badge-success">上架</span>' : '<span class="badge badge-secondary">下架</span>' ?></td>
         <td>
             <form method="post" style="display:inline;">

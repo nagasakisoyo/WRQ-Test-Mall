@@ -7,22 +7,22 @@ $users = $pdo->query("SELECT * FROM user ORDER BY id ASC")->fetchAll();
 $genderMap = [0 => '未知', 1 => '男', 2 => '女'];
 ?>
 
-<h3>用户管理</h3>
-<table class="table table-bordered table-hover">
-    <thead class="thead-dark">
+<h3 style="font-family:var(--font-display);margin-bottom:1.5rem;">用户管理</h3>
+<table class="table table-hover">
+    <thead>
         <tr><th>ID</th><th>用户名</th><th>昵称</th><th>真实姓名</th><th>性别</th><th>手机</th><th>邮箱</th><th>注册时间</th></tr>
     </thead>
     <tbody>
     <?php foreach ($users as $u): ?>
     <tr>
-        <td><?= $u['id'] ?></td>
+        <td style="font-family:var(--font-mono);font-size:.85rem;"><?= $u['id'] ?></td>
         <td><?= h($u['username']) ?></td>
         <td><?= h($u['nickname']) ?></td>
         <td><?= h($u['realname']) ?></td>
         <td><?= $genderMap[$u['gender']] ?? '未知' ?></td>
-        <td><?= h($u['phone']) ?></td>
+        <td style="font-family:var(--font-mono);font-size:.85rem;"><?= h($u['phone']) ?></td>
         <td><?= h($u['email']) ?></td>
-        <td><?= $u['create_time'] ?></td>
+        <td style="font-size:.85rem;color:var(--text-muted);"><?= $u['create_time'] ?></td>
     </tr>
     <?php endforeach; ?>
     </tbody>

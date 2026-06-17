@@ -1,7 +1,6 @@
 <?php
 $page_title = '首页';
 
-// Gracefully handle database not yet initialized
 $db_ok = true;
 try {
     $pdo = get_pdo();
@@ -11,47 +10,46 @@ try {
 }
 
 if (!$db_ok) {
-    // Database doesn't exist or tables missing — show install page
     include __DIR__ . '/../includes/header.php';
     ?>
     <div class="text-center py-5">
-        <h1 class="display-4 text-primary mb-4">WRQTestMall 靶场</h1>
-        <div class="alert alert-warning d-inline-block" style="max-width:600px;">
-            <h5>⚠ 数据库尚未初始化</h5>
-            <p>检测到数据库 <code>wrqtestmall</code> 不存在或表结构缺失。<br>点击下方按钮一键初始化数据库和测试数据。</p>
-        </div>
-        <br><br>
-        <button id="btn-init-db" class="btn btn-danger btn-lg px-5">
-            🚀 初始化数据库
+        <div style="font-size:3rem;margin-bottom:1rem;opacity:.6;">&#9881;</div>
+        <h1 class="mb-3" style="font-size:2rem;">WRQTestMall</h1>
+        <p class="mb-4" style="color:var(--text-secondary);max-width:420px;margin:0 auto;">
+            数据库 <code>wrqtestmall</code> 未找到或数据表缺失。<br>
+            点击下方按钮初始化数据库并生成测试数据。
+        </p>
+        <button id="btn-init-db" class="btn btn-primary btn-lg px-5">
+            初始化数据库
         </button>
-        <div id="init-result" class="mt-3"></div>
+        <div id="init-result" class="mt-3" style="max-width:500px;margin:0 auto;"></div>
     </div>
     <script>
     document.getElementById('btn-init-db').addEventListener('click', function() {
         var btn = this;
         btn.disabled = true;
-        btn.textContent = '正在初始化，请稍候...';
-        document.getElementById('init-result').innerHTML = '<div class="spinner-border text-primary"></div>';
+        btn.textContent = '正在初始化...';
+        document.getElementById('init-result').innerHTML = '<div class="spinner-border spinner-border-sm"></div>';
 
         fetch('<?= base_url() ?>/api/reset_database.php', {method: 'POST'})
             .then(function(r) { return r.json(); })
             .then(function(res) {
                 if (res.success) {
                     document.getElementById('init-result').innerHTML =
-                        '<div class="alert alert-success">' + res.msg + '<br><br>页面将在 2 秒后刷新...</div>';
-                    setTimeout(function() { location.reload(); }, 2000);
+                        '<div class="alert alert-success mt-3">' + res.msg + '</div>';
+                    setTimeout(function() { location.reload(); }, 1500);
                 } else {
                     document.getElementById('init-result').innerHTML =
-                        '<div class="alert alert-danger">' + res.msg + '</div>';
+                        '<div class="alert alert-danger mt-3">' + res.msg + '</div>';
                     btn.disabled = false;
-                    btn.textContent = '🚀 重试初始化';
+                    btn.textContent = '重试';
                 }
             })
             .catch(function(err) {
                 document.getElementById('init-result').innerHTML =
-                    '<div class="alert alert-danger">请求失败: ' + err + '</div>';
+                    '<div class="alert alert-danger mt-3">请求失败: ' + err + '</div>';
                 btn.disabled = false;
-                btn.textContent = '🚀 重试初始化';
+                btn.textContent = '重试';
             });
     });
     </script>
@@ -59,8 +57,6 @@ if (!$db_ok) {
     include __DIR__ . '/../includes/footer.php';
     return;
 }
-
-// ---- Normal homepage below ----
 
 $announcements = $pdo->query("SELECT a.*, ad.nickname as admin_nickname FROM announcement a LEFT JOIN admin ad ON a.admin_id = ad.id WHERE a.is_visible = 1 ORDER BY a.create_time DESC LIMIT 5")->fetchAll();
 
@@ -77,28 +73,28 @@ include __DIR__ . '/../includes/header.php';
 
 <?php if ($announcements): ?>
 <div class="alert alert-warning alert-dismissible fade show" role="alert">
-    <strong>公告：</strong>
+    <strong style="margin-right:.5rem;">公告:</strong>
     <?php foreach ($announcements as $ann): ?>
-        <span class="mr-3"><?= $ann['title'] ?> —— <?= $ann['admin_nickname'] ?></span>
+        <span class="mr-3"><?= h($ann['title']) ?></span>
     <?php endforeach; ?>
     <button type="button" class="close" data-dismiss="alert">&times;</button>
 </div>
 <?php endif; ?>
 
-<div id="heroCarousel" class="carousel slide mb-4" data-ride="carousel">
+<div class="carousel slide mb-4" id="heroCarousel" data-ride="carousel">
     <div class="carousel-inner">
         <div class="carousel-item active">
-            <div class="bg-primary text-white text-center py-5 rounded">
-                <h1>WRQTestMall 618 大促</h1>
-                <p class="lead">全场商品限时优惠，满300减50！</p>
-                <a href="<?= base_url() ?>/index.php?action=products" class="btn btn-light btn-lg">立即选购</a>
+            <div class="py-5 rounded text-center hero-slide" style="background:linear-gradient(135deg, rgba(16,185,129,.15), var(--bg-surface));border:1px solid var(--border);">
+                <h1 style="color:var(--accent);">WRQTestMall</h1>
+                <p class="lead" style="color:var(--text-secondary);">Web安全渗透测试训练平台，内含真实漏洞</p>
+                <a href="<?= base_url() ?>/index.php?action=products" class="btn btn-primary btn-lg">浏览商品</a>
             </div>
         </div>
         <div class="carousel-item">
-            <div class="bg-success text-white text-center py-5 rounded">
-                <h1>新品上架</h1>
-                <p class="lead">锤子手机 T3 震撼发布</p>
-                <a href="<?= base_url() ?>/index.php?action=product&id=1" class="btn btn-light btn-lg">查看详情</a>
+            <div class="py-5 rounded text-center hero-slide" style="background:linear-gradient(135deg, rgba(59,130,246,.1), var(--bg-surface));border:1px solid var(--border);">
+                <h1 style="color:var(--text-primary);">8大OWASP漏洞</h1>
+                <p class="lead" style="color:var(--text-secondary);">SQL注入、文件上传、越权访问、XSS等</p>
+                <a href="<?= base_url() ?>/index.php?action=product&id=1" class="btn btn-outline-primary btn-lg">查看详情</a>
             </div>
         </div>
     </div>
@@ -113,17 +109,16 @@ include __DIR__ . '/../includes/header.php';
     <?php foreach ($featured[$cat['id']] as $prod): ?>
     <div class="col-md-3 mb-3">
         <div class="card h-100 product-card">
-            <div class="card-img-top bg-light text-center py-4">
-                <span class="text-muted" style="font-size:3rem;">📦</span>
-            </div>
+            <div class="card-img-top text-center py-4" style="background:var(--bg-elevated);font-size:2.5rem;opacity:.5;">&#128230;</div>
             <div class="card-body">
-                <h6 class="card-title"><?= h($prod['name']) ?></h6>
-                <p class="text-muted small"><?= h($prod['title']) ?></p>
-                <p class="text-danger font-weight-bold">¥<?= format_price($prod['sale_price']) ?>
-                    <small class="text-muted"><del>¥<?= format_price($prod['price']) ?></del></small>
+                <h6 class="card-title" style="font-family:var(--font-display);font-weight:600;"><?= h($prod['name']) ?></h6>
+                <p style="color:var(--text-muted);font-size:.82rem;margin-bottom:.5rem;"><?= h($prod['title']) ?></p>
+                <p class="mb-0">
+                    <span class="price-current" style="font-size:1.1rem;">&yen;<?= format_price($prod['sale_price']) ?></span>
+                    <small class="price-original ml-1"><del>&yen;<?= format_price($prod['price']) ?></del></small>
                 </p>
             </div>
-            <div class="card-footer bg-white">
+            <div class="card-footer">
                 <a href="<?= base_url() ?>/index.php?action=product&id=<?= $prod['id'] ?>" class="btn btn-sm btn-outline-primary btn-block">查看详情</a>
             </div>
         </div>
@@ -134,37 +129,37 @@ include __DIR__ . '/../includes/header.php';
 <?php endforeach; ?>
 
 <div class="text-center mt-5 mb-4">
-    <button id="btn-reset-db" class="btn btn-outline-danger btn-sm">🔄 重置数据库</button>
+    <button id="btn-reset-db" class="btn btn-outline-danger btn-sm">重置数据库</button>
     <div id="reset-result" class="mt-2"></div>
 </div>
 
 <script>
 document.getElementById('btn-reset-db').addEventListener('click', function() {
-    if (!confirm('确定要重置数据库吗？将清空所有数据并恢复到初始状态，此操作不可撤销！')) return;
+    if (!confirm('确定重置数据库？所有数据将恢复到初始状态，此操作不可撤销。')) return;
     var btn = this;
     btn.disabled = true;
     btn.textContent = '正在重置...';
-    document.getElementById('reset-result').innerHTML = '<div class="spinner-border spinner-border-sm text-danger"></div>';
+    document.getElementById('reset-result').innerHTML = '<div class="spinner-border spinner-border-sm"></div>';
 
     fetch('<?= base_url() ?>/api/reset_database.php', {method: 'POST'})
         .then(function(r) { return r.json(); })
         .then(function(res) {
             if (res.success) {
                 document.getElementById('reset-result').innerHTML =
-                    '<div class="alert alert-success py-1 small">' + res.msg + '<br>页面将在 2 秒后刷新...</div>';
-                setTimeout(function() { location.reload(); }, 2000);
+                    '<div class="alert alert-success py-1 small">' + res.msg + '</div>';
+                setTimeout(function() { location.reload(); }, 1500);
             } else {
                 document.getElementById('reset-result').innerHTML =
                     '<div class="alert alert-danger py-1 small">' + res.msg + '</div>';
                 btn.disabled = false;
-                btn.textContent = '🔄 重试';
+                btn.textContent = '重试';
             }
         })
         .catch(function(err) {
             document.getElementById('reset-result').innerHTML =
                 '<div class="alert alert-danger py-1 small">请求失败: ' + err + '</div>';
             btn.disabled = false;
-            btn.textContent = '🔄 重试';
+            btn.textContent = '重试';
         });
 });
 </script>
