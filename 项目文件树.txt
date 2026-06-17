@@ -1,0 +1,102 @@
+WRQTestMall 靶场项目文件树（48 个文件）
+==========================================
+
+wrq-test-mall/
+├── .htaccess                                    # Apache 配置（开启错误显示、上传大小限制）
+├── index.php                                    # 前台路由入口
+│
+├── config/
+│   └── database.php                             # 数据库连接配置（127.0.0.1:3306 root/123456）
+│
+├── includes/
+│   ├── db.php                                   # mysqli + PDO 双连接封装
+│   ├── auth.php                                 # 前台 session 鉴权
+│   ├── admin_auth.php                           # 后台 session 鉴权
+│   ├── functions.php                            # 通用工具函数（h() 转义、json_response 等）
+│   ├── header.php                               # 前台页头模板
+│   ├── footer.php                               # 前台页脚模板
+│   ├── admin_header.php                         # 后台页头模板
+│   └── admin_footer.php                         # 后台页脚模板
+│
+├── pages/                                       # 前台页面
+│   ├── home.php                                 # 首页（公告展示 → XSS 触发点）
+│   ├── login.php                                # 用户登录页
+│   ├── do_login.php                             # 用户登录处理
+│   ├── register.php                             # 用户注册页
+│   ├── do_register.php                          # 用户注册处理
+│   ├── product_list.php                         # 商品列表
+│   ├── product_detail.php                       # 商品详情（"展开更多信息"按钮）
+│   ├── cart.php                                 # 购物车
+│   ├── order_create.php                         # 订单确认（total_price 隐藏字段）
+│   ├── order_pay.php                            # 订单支付
+│   ├── order_list.php                           # 订单列表
+│   ├── user_center.php                          # 个人中心（uid 隐藏字段 → IDOR）
+│   └── forgot_password.php                      # 忘记密码（三步式 → 响应篡改绕过）
+│
+├── api/                                         # 后端接口
+│   ├── product_detail.php                       # ⚡ VULN-001: SQL注入（multi_query 拼接）
+│   ├── user_profile.php                         # ⚡ VULN-003: 水平越权（IDOR）
+│   ├── order_create.php                         # ⚡ VULN-004: 0元购（信任客户端金额）
+│   ├── forgot_password.php                      # ⚡ VULN-008: 任意密码重置（响应篡改绕过）
+│   ├── cart.php                                 # 购物车操作接口
+│   ├── order_pay.php                            # 订单支付接口
+│   └── internal/
+│       └── _sys_user_query.php                  # ⚡ VULN-007: 隐藏未授权接口
+│
+├── admin/                                       # 后台管理
+│   ├── login.php                                # ⚡ VULN-006: 弱口令 admin/admin123
+│   ├── profile.php                              # ⚡ VULN-005: 存储型XSS（昵称未过滤）
+│   ├── upload.php                               # ⚡ VULN-002: 任意文件上传（无服务端校验）
+│   ├── dashboard.php                            # 仪表盘
+│   ├── products.php                             # 商品管理
+│   ├── orders.php                               # 订单管理
+│   ├── users.php                                # 用户管理
+│   ├── announcements.php                        # 公告管理（XSS二次触发点）
+│   └── logout.php                               # 管理员登出
+│
+├── assets/
+│   ├── css/
+│   │   ├── style.css                            # 前台样式
+│   │   └── admin.css                            # 后台样式
+│   └── js/
+│       ├── utils.js                             # ⚡ 隐藏接口地址（Base64编码在 _0xb4c2 数组中）
+│       ├── product_detail.js                    # "展开更多"AJAX 调用
+│       ├── user_center.js                       # 个人信息AJAX（uid参数 → IDOR）
+│       ├── order.js                             # 订单提交（total_price从DOM取值 → 0元购）
+│       └── upload.js                            # 前端文件后缀/MIME校验（唯一防线）
+│
+├── uploads/
+│   ├── .htaccess                                # 故意允许 PHP 解析执行
+│   ├── avatars/.gitkeep                         # 头像上传目录
+│   └── products/.gitkeep                        # 商品图片目录
+│
+└── sql/
+    └── wrqtestmall.sql                          # 数据库初始化脚本
+
+
+漏洞 → 代码对应关系
+==========================================
+
+| # | 漏洞类型       | 关键文件                                    | 实现方式                                          |
+|---|---------------|-------------------------------------------|--------------------------------------------------|
+| 1 | SQL注入        | api/product_detail.php                     | $id 直接拼接 + multi_query() 支持堆叠查询           |
+| 2 | 文件上传       | admin/upload.php + assets/js/upload.js     | JS 仅前端校验，服务端 move_uploaded_file 无任何检查  |
+| 3 | 水平越权       | api/user_profile.php + assets/js/user_center.js | 检查登录态但不校验 uid 归属                    |
+| 4 | 0元购          | api/order_create.php + assets/js/order.js  | $_POST['total_price'] 直接入库                     |
+| 5 | 存储型XSS      | admin/profile.php → pages/home.php         | 昵称存储无过滤，输出无 htmlspecialchars              |
+| 6 | 弱口令         | admin/login.php + sql/wrqtestmall.sql      | admin / admin123，MD5 存储，无验证码/锁定           |
+| 7 | 隐藏接口       | api/internal/_sys_user_query.php + utils.js | Base64 编码藏在 _0xb4c2 数组中，接口无鉴权          |
+| 8 | 任意密码重置    | api/forgot_password.php                    | Step 3 仅检查 session 中有 username，不验证 Step 2  |
+
+
+默认账号
+==========================================
+
+| 角色   | 用户名 | 密码      | 入口                        |
+|--------|--------|----------|----------------------------|
+| 管理员 | admin  | admin123 | admin/login.php             |
+| 用户1  | user1  | 123456   | index.php?action=login      |
+| 用户2  | user2  | 123456   | index.php?action=login      |
+| 用户3  | user3  | 123456   | index.php?action=login      |
+| 用户4  | user4  | 123456   | index.php?action=login      |
+| 用户5  | user5  | 123456   | index.php?action=login      |

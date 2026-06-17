@@ -1,0 +1,10 @@
+# VULN: Intentionally allow PHP execution in the uploads directory.
+# This is required for the file upload vulnerability (VULN-002)
+# to allow uploaded .php files to be parsed and executed by Apache.
+
+# Ensure PHP files ARE processed (do NOT add "php_flag engine off")
+AddHandler application/x-httpd-php .php .phtml .php3 .php4 .php5 .php7
+
+# Allow access to all files
+Options -Indexes
+Require all granted

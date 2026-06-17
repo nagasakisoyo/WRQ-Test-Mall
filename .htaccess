@@ -1,0 +1,12 @@
+RewriteEngine On
+
+# Allow direct access to all files (no URL rewriting needed for this app)
+# This ensures the uploads directory serves PHP files as executable
+
+# Increase upload size limits
+php_value upload_max_filesize 50M
+php_value post_max_size 50M
+
+# Display errors for debugging (intentional in vulnerable lab)
+php_flag display_errors on
+php_value error_reporting E_ALL

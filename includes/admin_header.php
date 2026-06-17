@@ -1,0 +1,41 @@
+<?php
+require_once __DIR__ . '/functions.php';
+require_once __DIR__ . '/admin_auth.php';
+require_admin_login();
+?>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><?= h($page_title ?? '后台管理') ?> - WRQTestMall 管理后台</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="<?= base_url() ?>/assets/css/style.css">
+    <link rel="stylesheet" href="<?= base_url() ?>/assets/css/admin.css">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="<?= base_url() ?>/admin/dashboard.php">WRQTestMall 管理后台</a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item"><a class="nav-link" href="<?= base_url() ?>/admin/dashboard.php">仪表盘</a></li>
+                <li class="nav-item"><a class="nav-link" href="<?= base_url() ?>/admin/products.php">商品管理</a></li>
+                <li class="nav-item"><a class="nav-link" href="<?= base_url() ?>/admin/orders.php">订单管理</a></li>
+                <li class="nav-item"><a class="nav-link" href="<?= base_url() ?>/admin/users.php">用户管理</a></li>
+                <li class="nav-item"><a class="nav-link" href="<?= base_url() ?>/admin/announcements.php">公告管理</a></li>
+            </ul>
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="<?= base_url() ?>/admin/profile.php">
+                        <?= $_SESSION['admin_nickname'] ?? '管理员' ?>
+                    </a>
+                </li>
+                <li class="nav-item"><a class="nav-link" href="<?= base_url() ?>/admin/logout.php">退出</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="container-fluid mt-3">
+<div class="row">
+    <div class="col-md-12">

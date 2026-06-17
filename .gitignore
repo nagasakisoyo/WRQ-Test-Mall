@@ -1,0 +1,15 @@
+# Uploaded files (keep directory structure, ignore content)
+uploads/avatars/*
+uploads/products/*
+!uploads/avatars/.gitkeep
+!uploads/products/.gitkeep
+
+# IDE / OS
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+Thumbs.db
+.DS_Store
+desktop.ini
