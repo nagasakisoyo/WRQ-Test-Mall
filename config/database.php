@@ -7,6 +7,6 @@ define('DB_NAME', 'wrqtestmall');
 define('DB_CHARSET', 'utf8mb4');
 
 define('SITE_NAME', 'WRQTestMall');
-define('SITE_URL', '/wrq-test-mall');
+define('SITE_URL', '');
 define('UPLOAD_DIR', __DIR__ . '/../uploads/');
 define('UPLOAD_URL', SITE_URL . '/uploads/');

@@ -17,7 +17,8 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item"><a class="nav-link" href="<?= base_url() ?>/index.php">首页</a></li>
-                <?php $cats = get_categories(); foreach ($cats as $cat): ?>
+                <?php try { $cats = get_categories(); } catch (Exception $e) { $cats = []; } ?>
+                <?php foreach ($cats as $cat): ?>
                 <li class="nav-item">
                     <a class="nav-link" href="<?= base_url() ?>/index.php?action=products&cid=<?= $cat['id'] ?>"><?= h($cat['name']) ?></a>
                 </li>
